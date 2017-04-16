@@ -13,9 +13,6 @@ def xavier_init(fan_in, fan_out, constant = 1):
                          dtype = tf.float32)
 
 
-def train(self, n_input):
-  x = tf.placeholder(tf.float32, [None, n_input])
-
 mnist = input_data.read_data_sets('MNIST_data', one_hot = True)
 
 def standard_scale(X_train, X_test):
@@ -39,7 +36,9 @@ hidden1 = tf.nn.softplus(tf.add(tf.matmul(x, w1), b1))
 # 第二层
 w2 = tf.Variable(xavier_init(200, 200))
 b2 = tf.Variable(xavier_init(1, 200))
-hidden2 = tf.nn.softplus(tf.add(tf.matmul(hidden1, w2), b2))
+n_hidden2 = tf.nn.softplus(tf.add(tf.matmul(hidden1, w2), b2))
+relu_hidden2 = tf.nn.relu(n_hidden2)
+hidden2 = tf.nn.l2_normalize(relu_hidden2, 0)
 
 # 第三层参数
 w3 = tf.Variable(xavier_init(200, 784))
