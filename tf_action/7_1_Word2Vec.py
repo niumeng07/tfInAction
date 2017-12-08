@@ -26,7 +26,10 @@ import tensorflow as tf
 
 # Step 1: Download the data.
 url = 'http://mattmahoney.net/dc/'
-local_data_path = './data/'
+if os.path.exists('/User/liuda/'):  # mac
+  local_data_path = 'User/liuda/Local/data/')
+else:
+  local_data_path = './data/'  # Centos
 checkpoint_dir = './checkpoint_dir/'
 if not os.path.exists(checkpoint_dir):
   os.mkdir(checkpoint_dir)
