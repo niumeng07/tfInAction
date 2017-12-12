@@ -16,24 +16,22 @@
 # ==============================================================================
 import collections
 import math
-import os
+import os, sys, time
 import random
-import zipfile
-import pdb
+import zipfile, pdb
 import numpy as np
 import urllib
 import tensorflow as tf
 
 # Step 1: Download the data.
 url = 'http://mattmahoney.net/dc/'
-if os.path.exists('/User/liuda/'):  # mac
-  local_data_path = 'User/liuda/Local/data/')
+if os.path.exists('/Users/liuda/'):  # mac
+  local_data_path = '/Users/liuda/Local/data/'
 else:
   local_data_path = './data/'  # Centos
 checkpoint_dir = './checkpoint_dir/'
 if not os.path.exists(checkpoint_dir):
   os.mkdir(checkpoint_dir)
-
 def maybe_download(filename, expected_bytes):
   """Download a file if not present, and make sure it's the right size."""
   if not os.path.exists(local_data_path + os.sep + filename):
@@ -215,6 +213,8 @@ with tf.Session(graph=graph, config = config ) as session:
   average_loss = 0
   coord = tf.train.Coordinator()
   threads = tf.train.start_queue_runners(sess = session, coord = coord)
+  start_time = time.clock()
+  end_time = 0
   try:
       for step in range(num_steps):
         batch_inputs, batch_labels = generate_batch(
@@ -230,7 +230,9 @@ with tf.Session(graph=graph, config = config ) as session:
           if step > 0:
             average_loss /= 2000
           # The average loss is an estimate of the loss over the last 2000 batches.
-          print("Average loss at step ", step, ": ", average_loss)
+          end_time = time.clock()
+          print("Average loss at step ", step, ": ", average_loss, "time used: ", end_time - start_time )
+          start_time = time.clock()
           average_loss = 0
 
         # Note that this is expensive (~20% slowdown if computed every 500 steps)

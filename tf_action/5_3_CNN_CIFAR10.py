@@ -21,7 +21,7 @@ import time
 
 max_steps = 3000
 batch_size = 128
-data_dir = '/tmp/cifar10_data/cifar-10-batches-bin'
+data_dir = '/Users/liuda/Local/data/cifar10/cifar-10-batches-bin'
 
 
 def variable_with_weight_loss(shape, stddev, wl):
